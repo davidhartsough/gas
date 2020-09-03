@@ -1,4 +1,4 @@
-# G.A.S. for Spotify
+# ⛽️ GAS (for Spotify)
 
 The Genre/Artist Shuffler
 
