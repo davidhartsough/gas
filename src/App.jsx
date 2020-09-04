@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import Layout from "./Layout";
 import Welcome from "./Welcome";
-import Shuffle from "./Shuffle";
+import Router from "./shuffler/Router";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("gasToken"));
-  return (
-    <Layout>
-      {!token ? <Welcome setToken={setToken} /> : <Shuffle token={token} />}
-    </Layout>
-  );
+  if (!token) return <Welcome setToken={setToken} />;
+  return <Router />;
 }
 
 export default App;

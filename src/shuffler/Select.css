@@ -1,0 +1,11 @@
+.genre-select .gs__control {
+  background-color: #222;
+}
+.genre-select .gs__single-value {
+  color: #fff;
+}
+.genre-select .gs__menu {
+  background-color: #282828;
+  border: 1px solid #555;
+  margin: 0.125rem 0;
+}

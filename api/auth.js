@@ -1,32 +1,21 @@
 import axios from "axios";
+import { getErrorResponse, allowCors } from "../api-utils";
 
 const { CLIENT_ID, SECRET } = process.env;
 
-export default async function auth(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, Content-Type, Accept"
-  );
-  if (req.method === "OPTIONS") return res.status(200).send("ok");
-  //
+async function auth(_, res) {
   try {
     const { data } = await axios.post(
       "https://accounts.spotify.com/api/token",
-      { grant_type: "client_credentials" },
-      {
-        auth: {
-          username: CLIENT_ID,
-          password: SECRET,
-        },
-      }
+      "grant_type=client_credentials",
+      { auth: { username: CLIENT_ID, password: SECRET } }
     );
-    console.log("data", data);
     return res.status(200).json(data);
   } catch (error) {
-    const { message } = error.response ? error.response.data : error;
-    return res.status(400).json({ message });
+    return res.status(400).json(getErrorResponse(error));
   }
 }
+
+const handler = allowCors(auth);
+
+export default handler;

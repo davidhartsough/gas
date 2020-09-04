@@ -1,6 +1,6 @@
 # ⛽️ GAS (for Spotify)
 
-The Genre/Artist Shuffler
+**The Genre/Artist Shuffler**
 
 - Fuel your listening
 - Start your engine

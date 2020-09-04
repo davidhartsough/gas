@@ -1,29 +1,25 @@
 import axios from "axios";
+import { getErrorResponse, allowCors } from "../api-utils";
 
-export default async function gas(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With, Content-Type, Accept"
-  );
-  if (req.method === "OPTIONS") return res.status(200).send("ok");
-  //
+async function gas(req, res) {
   const { token, genre, page } = req.body;
-  const offset = 5 * (page - 1);
+  const offset = 4 * (page - 1);
   try {
-    console.log("req.body", req.body);
-    const { data } = axios.get(
-      `https://api.spotify.com/v1/search?q=genre%3A%22${genre}%22&type=artist&market=US&limit=5&offset=${offset}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    console.log("data", data);
-    return res.status(200).json(data);
+    const url = `https://api.spotify.com/v1/search?q=genre%3A%22${genre}%22&type=artist&market=US&limit=4&offset=${offset}`;
+    const { data } = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const { total, items } = data.artists;
+    return res.status(200).json({ total, artists: items });
   } catch (error) {
-    const { message } = error.response ? error.response.data : error;
-    return res.status(400).json({ message });
+    const errorResponse = getErrorResponse(error);
+    if (errorResponse.message === "The access token expired") {
+      return res.status(200).json(errorResponse);
+    }
+    return res.status(400).json(getErrorResponse(error));
   }
 }
+
+const handler = allowCors(gas);
+
+export default handler;

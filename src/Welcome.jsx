@@ -1,26 +1,32 @@
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { getToken } from "./utils";
 
 export default function Welcome({ setToken }) {
+  const [loading, setLoading] = useState(false);
   function login() {
-    axios
-      .get("/api/auth")
-      .then(({ data }) => {
-        console.log(data);
-        const token = data.access_token;
-        localStorage.setItem("gasToken", token);
-        setToken(token);
-      })
-      .catch(console.warn);
+    setLoading(true);
+    getToken().then(setToken);
   }
   return (
-    <div>
-      <p>Fuel your listening</p>
-      <p>Start your engine</p>
-      <p>Explore the universe of music</p>
-      <button onClick={login} type="button">
-        Let&apos;s Go
-      </button>
-    </div>
+    <section className="welcome">
+      <header>
+        <img id="logo" src="/logo192.png" alt="GAS logo" />
+        <h1>GAS </h1>
+        <p> (for Spotify)</p>
+      </header>
+      <h2>The Genre/Artist Shuffler</h2>
+      <ul>
+        <li>Fuel your listening</li>
+        <li>Start your engine</li>
+        <li>Explore the universe of music</li>
+      </ul>
+      {loading ? (
+        <div className="loader" />
+      ) : (
+        <button onClick={login} type="button" id="login">
+          Let&apos;s Go
+        </button>
+      )}
+    </section>
   );
 }
