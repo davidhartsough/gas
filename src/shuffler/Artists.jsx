@@ -42,7 +42,7 @@ function Artists({ genre, page = "1" }) {
   if (loading) return <div className="loader" />;
   return (
     <div className="artists-shuffle">
-      <h2>{genre.replace(/%20/g, " ")}</h2>
+      <h2>{decodeURIComponent(genre)}</h2>
       <div className="artists">
         {artists.map((artist) => (
           <div key={artist.id} className="artist">
@@ -69,12 +69,15 @@ function Artists({ genre, page = "1" }) {
           </div>
         ))}
       </div>
-      <div className="reshuffle">
+      <div className="actions">
         <Link
           to={`/artists/${genre}/${getRandomPage(total)}`}
-          className="button"
+          className="button action"
         >
           Reshuffle
+        </Link>
+        <Link to="/" className="button action">
+          Change Genre
         </Link>
       </div>
     </div>

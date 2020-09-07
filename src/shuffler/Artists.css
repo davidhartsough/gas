@@ -52,7 +52,21 @@
   padding: 0.125rem 0.5rem 3px;
   border-radius: 0.75rem;
 }
-.reshuffle {
-  max-width: 10rem;
+.actions {
+  display: flex;
+  max-width: 36rem;
   margin: 0 auto;
+}
+.action {
+  flex: 0 0 10rem;
+  max-width: 10rem;
+  margin: 1rem auto;
+}
+@media (max-width: 480px) {
+  .actions {
+    display: block;
+  }
+  .action {
+    margin: 2rem auto;
+  }
 }
